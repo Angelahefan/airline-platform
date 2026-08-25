@@ -1,0 +1,35 @@
+name: "airline_dwh"
+version: "1.0.0"
+config-version: 2
+
+profile: "airline_dwh"
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+vars:
+  lookback_days: 3  # incremental late-data window for fact_flights
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  airline_dwh:
+    staging:
+      # table (not view): stg_flights de-duplicates with a window function over
+      # millions of rows — materializing computes it once instead of once per
+      # downstream model.
+      +materialized: table
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: marts
+
+seeds:
+  airline_dwh:
+    +schema: raw
