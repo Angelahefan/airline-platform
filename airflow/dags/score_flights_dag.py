@@ -20,9 +20,9 @@ from airflow.operators.python import PythonOperator
 PROJECT_DIR = os.environ.get("PROJECT_DIR", "/opt/airflow/project")
 if PROJECT_DIR not in sys.path:
     sys.path.insert(0, PROJECT_DIR)
-"""
-changed HIGH_RISK_ALERT_SHARE default from 0.25 to 0.5 to pass dags running. 
-"""
+
+# changed HIGH_RISK_ALERT_SHARE default from 0.25 to 0.5 to pass dags running. 
+
 HIGH_RISK_ALERT_SHARE = 0.5  # alert when >25% of tomorrow's flights are high-risk
 
 
@@ -72,12 +72,17 @@ def _score(**_):
             f"(> {HIGH_RISK_ALERT_SHARE:.0%}) — page ops planning."
         )
 
+def _on_failure_callback(context):
+    from quality.alerts import notify_failure
+    notify_failure(context)
+
 
 with DAG(
     dag_id="score_flights_daily",
     description="Daily delay-risk batch scoring into marts.predictions_daily",
     default_args={"owner": "data-engineering", "retries": 1,
-                  "retry_delay": timedelta(minutes=2)},
+                  "retry_delay": timedelta(minutes=2),
+                  "on_failure_callback": _on_failure_callback,},
     schedule="30 6 * * *",          # after the 06:00 pipeline run
     start_date=datetime(2024, 1, 1),
     catchup=False,
@@ -88,8 +93,9 @@ with DAG(
         task_id="refresh_feature_mart",
         bash_command=(f"cd {PROJECT_DIR}/dbt/airline_dwh && "
                       f"DBT_DUCKDB_PATH={PROJECT_DIR}/warehouse/airline.duckdb "
-                      f"dbt build --profiles-dir . --select fct_features_flight"),
+                      f"dbt build --profiles-dir . --select fct_features_flight"),        
     )
+    
 
     score = PythonOperator(task_id="score_flights", python_callable=_score)
 

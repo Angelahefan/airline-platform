@@ -21,20 +21,28 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
+
 PROJECT_DIR = os.environ.get("PROJECT_DIR", "/opt/airflow/project")
 if PROJECT_DIR not in sys.path:
     sys.path.insert(0, PROJECT_DIR)
+
+def _on_failure_callback(context):
+    from quality.alerts import notify_failure
+    notify_failure(context)
 
 DEFAULT_ARGS = {
     "owner": "data-engineering",
     "retries": 1,
     "retry_delay": timedelta(minutes=2),
     "depends_on_past": False,
+    "on_failure_callback": _on_failure_callback,
 }
 
 
 # --- task callables (import inside to keep DAG parsing cheap) ----------------
+
 def _generate(**_):
+    raise Exception("test failure for notify_failure")  # 临时加的,测试lalerts.py的notify_failure函数是否能正常工作
     from data.generate_data import main
     main()
 

@@ -18,7 +18,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__LOAD_EXAMPLES: "false"
     AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/project/airflow/dags
     PROJECT_DIR: /opt/airflow/project
-    _PIP_ADDITIONAL_REQUIREMENTS: "duckdb>=1.1 dbt-core>=1.8 dbt-duckdb>=1.8 great-expectations>=0.18,<0.19 pandas>=2.0 Faker>=24.0 tabulate>=0.9 python-dotenv>=1.0 joblib>=1.3 scikit-learn>=1.4 lightgbm>=4.0 pyarrow>=14.0"
+    _PIP_ADDITIONAL_REQUIREMENTS: "duckdb>=1.1 dbt-core>=1.8 dbt-duckdb>=1.8 great-expectations>=0.18,<0.19 pandas>=2.0 Faker>=24.0 tabulate>=0.9 python-dotenv>=1.0 joblib>=1.3 scikit-learn>=1.4 lightgbm>=4.0 pyarrow>=14.0 pytest>=8.0"
   volumes:
     - ./:/opt/airflow/project
     - airflow-logs:/opt/airflow/logs
