@@ -58,7 +58,7 @@ dashboard: ## Launch the Streamlit analytics dashboard
 	streamlit run dashboards/streamlit_app.py
 
 test: ## Run python unit tests
-	python -m pytest -q
+	docker compose exec airflow-scheduler python -m pytest /opt/airflow/project/tests/ -q
 
 clean: ## Remove generated data + warehouse + dbt artifacts
 	rm -rf warehouse data/raw/*.csv $(DBT_DIR)/target $(DBT_DIR)/dbt_packages $(DBT_DIR)/logs
