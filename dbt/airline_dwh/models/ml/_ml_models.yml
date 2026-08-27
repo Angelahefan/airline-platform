@@ -4,15 +4,21 @@ models:
   - name: fct_features_flight
     description: >
       ML feature mart at one row per completed flight, used for both training
-      and batch scoring so features can never drift between the two. All
-      features are computable BEFORE departure (leakage-safe): rolling windows
-      end the day before the flight; congestion counts scheduled departures.
-      Label = departure delay >= 15 minutes. Cancelled flights excluded (no
-      departure, no label).
+      and batch scoring so features can never drift between the two.
+    tests:
+      - dbt_utils.recency:
+          config:
+            severity: warn
+          arguments:
+            datepart: day
+            field: flight_date
+            interval: 1     
     columns:
       - name: flight_id
         description: "FK to fact_flights; one row per completed flight."
         tests: [unique, not_null]
+      - name: flight_date
+        description: "Flight date (schedule fact, known ahead)."       
       - name: is_delayed_dep
         description: "LABEL: departure delay >= 15 min (US DOT convention)."
         tests: [not_null]

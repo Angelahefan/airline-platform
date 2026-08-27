@@ -42,7 +42,6 @@ DEFAULT_ARGS = {
 # --- task callables (import inside to keep DAG parsing cheap) ----------------
 
 def _generate(**_):
-    raise Exception("test failure for notify_failure")  # 临时加的,测试lalerts.py的notify_failure函数是否能正常工作
     from data.generate_data import main
     main()
 
