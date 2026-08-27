@@ -20,9 +20,9 @@ def _format_failure_message(context: dict) -> str:
     run_id = context.get("run_id", "unknown_run")
     exception = context.get("exception")
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
+
     lines = [
-        f"Airflow task failed: {dag_id}.{task_id} failed at {timestamp}",
+        f"[ALERT] {dag_id}.{task_id} failed at {timestamp}",
         f"run_id={run_id} try={try_number}",
     ]
 
