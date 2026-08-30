@@ -108,6 +108,17 @@ with DAG(
                     f"dbt build --profiles-dir . --select fct_features_flight"),        
     )
 
-    score = PythonOperator(task_id="score_flights", python_callable=_score)
+    score = PythonOperator(task_id="score_flights", python_callable=_score)  
 
-    refresh_features >> score
+    refresh_daily_ops_summary = BashOperator(
+        task_id="refresh_daily_ops_summary",
+        bash_command=(
+            f"cd {PROJECT_DIR}/dbt/airline_dwh && "
+            f"DBT_DUCKDB_PATH={PROJECT_DIR}/warehouse/airline.duckdb "
+            f"dbt build --profiles-dir . --select fct_daily_ops_summary"
+        ),
+    )
+
+
+
+    refresh_features >> score >> score >> refresh_daily_ops_summary
