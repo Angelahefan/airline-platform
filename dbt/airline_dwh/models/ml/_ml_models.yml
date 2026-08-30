@@ -61,3 +61,30 @@ models:
         description: "Route volume over the same trailing window (support/confidence)."
       - name: carrier_delay_rate_30d
         description: "Carrier-level analogue of route_delay_rate_30d, same leakage-safe window."
+
+
+# ---------------- facts ----------------
+  - name: fct_daily_ops_summary
+    description: >
+      Daily operational summary including delay metrics. One row per flight_date
+      with counts and averages of all flights on that date.
+    columns:
+      - name: flight_date
+        tests: [unique, not_null]
+      - name:  delay_rate
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0 and delay_rate <= 1"
+      - name: total_flights
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: " > 0"
+
+      - name: delayed_flights
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: " >= 0"                
