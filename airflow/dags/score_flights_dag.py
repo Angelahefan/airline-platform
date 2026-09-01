@@ -108,7 +108,7 @@ with DAG(
                     f"dbt build --profiles-dir . --select fct_features_flight"),        
     )
 
-    score = PythonOperator(task_id="score_flights", python_callable=_score)
+    score = PythonOperator(task_id="score_flights", python_callable=_score)  
 
     refresh_daily_ops_summary = BashOperator(
         task_id="refresh_daily_ops_summary",
