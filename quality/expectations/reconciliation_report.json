@@ -1,15 +1,18 @@
 {
-  "overall": "PASS",
+  "overall": "FAIL",
   "detail": [
     {
       "source": "flights",
       "source_rows": 60180,
-      "raw_rows": 60180,
-      "load_fidelity": true,
-      "duplicates_removed": 180,
-      "staging_rows": 59911,
-      "rows_filtered_by_dq": 89,
-      "status": "RECONCILED"
+      "raw_rows": 200,
+      "load_fidelity": false,
+      "duplicates_removed": 0,
+      "staging_rows": 200,
+      "matched_rows": 200,
+      "raw_only_rows": 0,
+      "staging_only_rows": 0,
+      "unexplained_rows": 0,
+      "status": "FAIL"
     },
     {
       "source": "airports",
@@ -18,7 +21,10 @@
       "load_fidelity": true,
       "duplicates_removed": 0,
       "staging_rows": 40,
-      "rows_filtered_by_dq": 0,
+      "matched_rows": 40,
+      "raw_only_rows": 0,
+      "staging_only_rows": 0,
+      "unexplained_rows": 0,
       "status": "RECONCILED"
     },
     {
@@ -28,18 +34,24 @@
       "load_fidelity": true,
       "duplicates_removed": 0,
       "staging_rows": 10,
-      "rows_filtered_by_dq": 0,
+      "matched_rows": 10,
+      "raw_only_rows": 0,
+      "staging_only_rows": 0,
+      "unexplained_rows": 0,
       "status": "RECONCILED"
     },
     {
       "source": "weather",
       "source_rows": 3640,
-      "raw_rows": 3640,
-      "load_fidelity": true,
+      "raw_rows": 0,
+      "load_fidelity": false,
       "duplicates_removed": 0,
-      "staging_rows": 3640,
-      "rows_filtered_by_dq": 0,
-      "status": "RECONCILED"
+      "staging_rows": 0,
+      "matched_rows": null,
+      "raw_only_rows": null,
+      "staging_only_rows": null,
+      "unexplained_rows": null,
+      "status": "FAIL"
     }
   ]
 }

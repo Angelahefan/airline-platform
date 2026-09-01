@@ -1,9 +1,9 @@
 {
   "summary": {
-    "total": 25,
-    "passed": 22,
+    "total": 20,
+    "passed": 17,
     "failed": 3,
-    "critical_failed": 3
+    "critical_failed": 0
   },
   "results": [
     {
@@ -13,16 +13,16 @@
       "severity": "critical",
       "success": true,
       "unexpected_count": 0,
-      "element_count": 60180
+      "element_count": 200
     },
     {
       "table": "flights",
       "expectation": "expect_column_values_to_be_unique",
       "column": "flight_id",
       "severity": "critical",
-      "success": false,
-      "unexpected_count": 360,
-      "element_count": 60180
+      "success": true,
+      "unexpected_count": 0,
+      "element_count": 200
     },
     {
       "table": "flights",
@@ -31,7 +31,7 @@
       "severity": "critical",
       "success": true,
       "unexpected_count": 0,
-      "element_count": 60180
+      "element_count": 200
     },
     {
       "table": "flights",
@@ -40,7 +40,7 @@
       "severity": "critical",
       "success": true,
       "unexpected_count": 0,
-      "element_count": 60180
+      "element_count": 200
     },
     {
       "table": "flights",
@@ -49,16 +49,16 @@
       "severity": "critical",
       "success": true,
       "unexpected_count": 0,
-      "element_count": 60180
+      "element_count": 200
     },
     {
       "table": "flights",
       "expectation": "expect_column_values_to_be_in_set",
       "column": "dest",
       "severity": "critical",
-      "success": false,
-      "unexpected_count": 89,
-      "element_count": 60180
+      "success": true,
+      "unexpected_count": 0,
+      "element_count": 200
     },
     {
       "table": "flights",
@@ -67,25 +67,25 @@
       "severity": "critical",
       "success": true,
       "unexpected_count": 0,
-      "element_count": 60180
+      "element_count": 200
     },
     {
       "table": "flights",
       "expectation": "expect_column_values_to_be_in_set",
       "column": "cancellation_code",
       "severity": "warn",
-      "success": true,
-      "unexpected_count": 0,
-      "element_count": 60180
+      "success": false,
+      "unexpected_count": 200,
+      "element_count": 200
     },
     {
       "table": "flights",
       "expectation": "expect_column_values_to_be_between",
       "column": "dep_delay_min",
       "severity": "critical",
-      "success": false,
-      "unexpected_count": 116,
-      "element_count": 60180
+      "success": true,
+      "unexpected_count": 0,
+      "element_count": 200
     },
     {
       "table": "flights",
@@ -94,23 +94,23 @@
       "severity": "warn",
       "success": true,
       "unexpected_count": 0,
-      "element_count": 60180
+      "element_count": 200
     },
     {
       "table": "flights",
       "expectation": "expect_column_values_to_not_be_null",
       "column": "tail_number",
       "severity": "warn",
-      "success": true,
-      "unexpected_count": 337,
-      "element_count": 60180
+      "success": false,
+      "unexpected_count": 200,
+      "element_count": 200
     },
     {
       "table": "flights",
       "expectation": "expect_table_row_count_to_be_between",
       "column": "(table)",
       "severity": "warn",
-      "success": true,
+      "success": false,
       "unexpected_count": null,
       "element_count": null
     },
@@ -185,51 +185,6 @@
       "success": true,
       "unexpected_count": 0,
       "element_count": 10
-    },
-    {
-      "table": "weather",
-      "expectation": "expect_column_values_to_not_be_null",
-      "column": "weather_date",
-      "severity": "critical",
-      "success": true,
-      "unexpected_count": 0,
-      "element_count": 3640
-    },
-    {
-      "table": "weather",
-      "expectation": "expect_column_values_to_not_be_null",
-      "column": "airport_code",
-      "severity": "critical",
-      "success": true,
-      "unexpected_count": 0,
-      "element_count": 3640
-    },
-    {
-      "table": "weather",
-      "expectation": "expect_column_values_to_not_be_null",
-      "column": "precipitation_in",
-      "severity": "warn",
-      "success": true,
-      "unexpected_count": 83,
-      "element_count": 3640
-    },
-    {
-      "table": "weather",
-      "expectation": "expect_column_values_to_be_between",
-      "column": "temperature_f",
-      "severity": "warn",
-      "success": true,
-      "unexpected_count": 0,
-      "element_count": 3640
-    },
-    {
-      "table": "weather",
-      "expectation": "expect_column_values_to_be_in_set",
-      "column": "is_severe",
-      "severity": "critical",
-      "success": true,
-      "unexpected_count": 0,
-      "element_count": 3640
     }
   ]
 }

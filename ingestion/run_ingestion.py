@@ -1,13 +1,19 @@
 """
 Ingestion driver: land every source into the raw warehouse.
 
-    python -m ingestion.run_ingestion                # synthetic (default)
-    DATA_SOURCE=bts python -m ingestion.run_ingestion  # real US DOT data
+    python -m ingestion.run_ingestion                    # synthetic (default)
+    DATA_SOURCE=bts python -m ingestion.run_ingestion     # real US DOT data
+    DATA_SOURCE=kaggle python -m ingestion.run_ingestion  # Kaggle public dataset
 
-Two source modes, one raw contract:
+Three source modes, one raw contract:
   * synthetic — extract CSVs from the generator, load via pandas (small data).
   * bts       — real BTS monthly files loaded directly by DuckDB (6M+ rows),
                 see ingestion/bts_adapter.py.
+  * kaggle    — public Kaggle flights dataset loaded directly by DuckDB,
+                see ingestion/kaggle_adapter.py. NOTE: flight_id is hashed
+                from a 5-field key here (no tail_number in this source) vs.
+                BTS's 6-field key -- the two sources are NOT flight_id
+                compatible; see kaggle_adapter.py's module docstring.
 
 Talend analogy: this is the parent Job that wires the input components
 (extract) to the database output components (load) and records run metadata.
@@ -51,9 +57,33 @@ def run_bts() -> None:
         con.close()
 
 
+def run_kaggle() -> None:
+    """Kaggle-data mode: land the public flights dataset straight into raw via DuckDB."""
+    from ingestion.kaggle_adapter import kaggle_files, load_kaggle
+
+    files = kaggle_files()
+    if not files:
+        raise FileNotFoundError(
+            f"DATA_SOURCE=kaggle but no CSVs found in {settings.kaggle_data_dir}. "
+            "Download the flights dataset from Kaggle and place the CSV(s) there."
+        )
+    logger.info("=== ingestion (source=kaggle, %d files, warehouse=%s) ===",
+                len(files), settings.warehouse)
+    con = get_duckdb_connection()
+    try:
+        stats = load_kaggle(con)
+        logger.info("=== Kaggle ingestion complete: %s flights ===", f"{stats['flights']:,}")
+    finally:
+        con.close()
+
+
 def run() -> None:
     if settings.data_source == "bts":
         run_bts()
+        return
+
+    if settings.data_source == "kaggle":
+        run_kaggle()
         return
 
     batch_id = new_batch_id()

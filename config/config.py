@@ -40,12 +40,27 @@ def _default_bts_dir() -> Path:
         return sibling
     return in_repo
 
+def _default_kaggle_dir() -> Path:
+    """Resolve the Kaggle data directory: env var, in-repo data/kaggle, or a
+    sibling kaggle_data/ folder next to the project (handy for local drops).
+    Mirrors _default_bts_dir's resolution order for consistency."""
+    env = os.environ.get("KAGGLE_DATA_DIR")
+    if env:
+        return Path(env)
+    in_repo = PROJECT_ROOT / "data" / "kaggle"
+    if in_repo.exists() and any(in_repo.rglob("*.csv")):
+        return in_repo
+    sibling = PROJECT_ROOT.parent / "kaggle_data"
+    if sibling.exists():
+        return sibling
+    return in_repo
 
 @dataclass(frozen=True)
 class Settings:
     # --- data source: synthetic (default) | bts (real US DOT data) ---
-    data_source: str = field(default_factory=lambda: _get("DATA_SOURCE", "synthetic").lower())
+    data_source: str = field(default_factory=lambda: _get("DATA_SOURCE", "Synthetic").lower())
     bts_data_dir: Path = field(default_factory=_default_bts_dir)
+    kaggle_data_dir: Path = field(default_factory=_default_kaggle_dir)
 
     # --- warehouse selection ---
     warehouse: str = field(default_factory=lambda: _get("WAREHOUSE", "duckdb").lower())
