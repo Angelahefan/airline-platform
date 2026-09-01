@@ -9,10 +9,9 @@ models:
       - dbt_utils.recency:
           config:
             severity: warn
-          arguments:
-            datepart: day
-            field: flight_date
-            interval: 1     
+          datepart: day
+          field: flight_date
+          interval: 1     
     columns:
       - name: flight_id
         description: "FK to fact_flights; one row per completed flight."
@@ -75,16 +74,13 @@ models:
         tests:
           - not_null
           - dbt_utils.expression_is_true:
-              arguments:
                 expression: ">= 0 and delay_rate <= 1"
       - name: total_flights
         tests:
           - dbt_utils.expression_is_true:
-              arguments:
                 expression: " > 0"
 
       - name: delayed_flights
         tests:
           - dbt_utils.expression_is_true:
-              arguments:
                 expression: " >= 0"                
